@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -eux
+
+# Password is given to us via stdin, save it in a variable for later
+PASS=$(cat -)
+
+# List all zfs volumes, listing the *local* value of the property canmount.
+zfs get canmount -s local -H -o name,value | while read volname canmount; do
+  # Filter on canmount == 'noauto'. Filesystems marked 'noauto' can be mounted,
+  # but is not done so automatically during boot.
+  [[ $canmount = 'noauto' ]] || continue
+
+  # Filter on user property dk.talldanestale.automount:user. It should match
+  # the user that we are logging in as ($PAM_USER)
+  user=$(zfs get io.github.justinhop:user -s local -H -o value $volname)
+  [[ $user = $PAM_USER ]] || continue
+
+  if ! zfs mount | grep -P "\b$volname\b" ; then
+    # Unlock and mount the volume
+    zfs load-key "$volname" <<< "$PASS" || continue
+    zfs mount "$volname" || true # ignore erros
+  fi
+done

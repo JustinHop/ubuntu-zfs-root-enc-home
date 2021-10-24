@@ -7,6 +7,7 @@ HELP=
 KEYFILE=
 RMKEYFILE=
 NOOP=
+SITESTRING=io.github.justinhop
 VERBOSE=
 ZFSUSER=
 
@@ -103,7 +104,7 @@ for ZFSUSER in $@; do
 
     ZVOLNAMENE=${ZVOLNAME}_noenc
     ZSNAPNAME=${ZVOLNAME}@premigrate2enc
-    ZBOOTFS=$(zfs get com.ubuntu.zsys:bootfs-datasets rpool/USERDATA/yield_iul2j0 -s local -H -o value)
+    ZBOOTFS=$(zfs get com.ubuntu.zsys:bootfs-datasets $ZVOLNAME -s local -H -o value)
     if [ $VERBOSE ]; then
       echo "ZVOLNAME    : $ZVOLNAME"
       echo "ZVOLNAMENE  : $ZVOLNAMENE"
@@ -130,7 +131,8 @@ for ZFSUSER in $@; do
     fi
     $PCMD zfs set keylocation=prompt $ZVOLNAME
     $PCMD zfs set canmount=noauto $ZVOLNAME
-    $PCMD zfs set io.github.justinhop:user=$ZUSER $ZVOLNAME
+    $PCMD zfs set ${SITESTRING}:user=$ZUSER $ZVOLNAME
+    $PCMD chown -Rh $ZUID:$ZGID $ZHOME
     if [ $RMKEYFILE ]; then
       $PCMD shred $KEYFILE
       $PCMD rm $KEYFILE
