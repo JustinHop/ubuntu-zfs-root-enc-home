@@ -103,7 +103,7 @@ for ZFSUSER in $@; do
     [[ $ZMOUNTPOINT = $ZHOME ]] || continue
 
     ZVOLNAMENE=${ZVOLNAME}_noenc
-    ZSNAPNAME=${ZVOLNAME}@premigrate2enc
+    ZSNAPNAME=${ZVOLNAMENE}@premigrate2enc
     ZBOOTFS=$(zfs get com.ubuntu.zsys:bootfs-datasets $ZVOLNAME -s local -H -o value)
     if [ $VERBOSE ]; then
       echo "ZVOLNAME    : $ZVOLNAME"
