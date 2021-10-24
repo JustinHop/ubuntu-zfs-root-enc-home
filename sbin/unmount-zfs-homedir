@@ -3,9 +3,8 @@
 set -eu
 set -x
 
+cd /
+
 if [ "$PAM_TYPE" = "close_session" ]; then
-  if zfs mount | grep -P "\b$volname\b" ; then
-    # try to unmount the volume after this finishes
-    { sleep 15s; eval zfs unmount -u "~$PAM_USER" ; } &
-  fi
+  { sleep 15s; eval zfs unmount -u "~$PAM_USER" ; } &
 fi
