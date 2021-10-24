@@ -103,7 +103,7 @@ for ZFSUSER in $@; do
     [[ $ZMOUNTPOINT = $ZHOME ]] || continue
 
     ZVOLNAMENE=${ZVOLNAME}_noenc
-    ZSNAPNAME=${ZVOLNAME}@premigrate2enc
+    ZSNAPNAME=${ZVOLNAMENE}@premigrate2enc
     ZBOOTFS=$(zfs get com.ubuntu.zsys:bootfs-datasets $ZVOLNAME -s local -H -o value)
     if [ $VERBOSE ]; then
       echo "ZVOLNAME    : $ZVOLNAME"
@@ -123,7 +123,7 @@ for ZFSUSER in $@; do
     $PCMD zfs rename $ZVOLNAME $ZVOLNAMENE
     $PCMD zfs set mountpoint=none $ZVOLNAMENE
     $PCMD zfs snapshot $ZSNAPNAME
-    ZCMD="$PCMD zfs send -v -c $ZVOLNAMENE | $PCMD zfs recv -v -o encryption=aes-256-gcm -o keyformat=passphrase -o keylocation=file://$KEYFILE -o mountpoint=$ZHOME -o com.ubuntu.zsys:bootfs-dataset=$ZBOOTFS $ZVOLNAME"
+    ZCMD="$PCMD zfs send -v -c $ZSNAPNAME | $PCMD zfs recv -v -o encryption=aes-256-gcm -o keyformat=passphrase -o keylocation=file://$KEYFILE -o mountpoint=$ZHOME -o com.ubuntu.zsys:bootfs-dataset=$ZBOOTFS $ZVOLNAME"
     if [ $NOOP ]; then
       echo "$ZCMD"
     else
