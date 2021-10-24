@@ -38,6 +38,8 @@ This project automates code from, adds to, was inspired by, etc
 - https://github.com/openzfs/zfs
 - https://ubuntu.com
 
+# Known Issues
+- Unmounting is unworking currently
 
 # Special thanks to me
 - btc: bc1qqxrjrzw9mwa49tv6wucrz22xr5ga4kg8ptl9x5
