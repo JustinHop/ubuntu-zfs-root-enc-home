@@ -6,5 +6,11 @@ set -x
 cd /
 
 if [ "$PAM_TYPE" = "close_session" ]; then
-  { sleep 15s; eval zfs unmount -u "~$PAM_USER" ; } &
+  zfs get mountpoint -s local -H -o name,value | while read volname mountpoint; do
+    # Check for user mounted homedir
+    eval export PAM_HOME="~$PAM_USER"
+    [[ $mountpoint = $PAM_HOME ]] || continue
+
+    { sleep 15s; eval zfs unmount -u $volname ; } &
+  done
 fi

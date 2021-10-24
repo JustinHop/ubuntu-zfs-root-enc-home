@@ -133,6 +133,7 @@ for ZFSUSER in $@; do
     $PCMD zfs set canmount=noauto $ZVOLNAME
     $PCMD zfs set ${SITESTRING}:user=$ZUSER $ZVOLNAME
     $PCMD chown -Rh $ZUID:$ZGID $ZHOME
+    $PCMD zfs allow -u $ZUSER mount,load-key,change-key $ZVOLNAME
     if [ $RMKEYFILE ]; then
       $PCMD shred $KEYFILE
       $PCMD rm $KEYFILE
