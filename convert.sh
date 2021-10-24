@@ -74,7 +74,7 @@ fi
 PCMD=$NOOP
 if [ $(whoami) != "root" ]; then
   # set stuff for non root users and make sure sudo works
-  PCMD="$PRECMD sudo"
+  PCMD="$PCMD sudo"
   sudo true
 fi
 
