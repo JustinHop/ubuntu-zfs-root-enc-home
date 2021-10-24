@@ -1,0 +1,9 @@
+# Add these lines in what is equal to /etc/pam.d/common-auth on ubuntu21.10
+# Add this line above anything having to deal with ecryptfs or just towards or
+# at the bottom
+# Also comment out anything zfs related that was already there
+auth optional pam_exec.so expose_authtok /sbin/mount-zfs-homedir
+session optional pam_exec.so /sbin/unmount-zfs-homedir
+# here the same thing with debug logging enabled
+auth optional pam_exec.so expose_authtok debug log=/var/log/pam-mount-zfs-homedir.log /sbin/mount-zfs-homedir
+session optional pam_exec.so debug log=/var/log/pam-unmount-zfs-homedir.log /sbin/unmount-zfs-homedir
