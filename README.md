@@ -1,9 +1,13 @@
 # ubuntu-zfs-root-enc-home
 Copyright 2021 Justin Hoppensteadt
+
 Additional per user encryption of home dir for Ubuntu systems with ZFS root
 
-Existing solutions either don't work on Ubuntu 21.10, or are manual processes
-that are not suitable for large, or production, environments.
+I found that existing solutions either didn't work for me on Ubuntu 21.10,
+or are manual processes that are not suitable for larger environments or lazy
+admins.
+
+This one is not a perfect solution, but works for me.
 
 ## Installation and usage
 1. Copy sbin/* to /sbin, chmod 0755 them, chown root:root them as well and
